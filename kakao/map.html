@@ -13,18 +13,36 @@
         // var container = document.getElementById('map');
         const container = $('#map')[0];
 
+        // 위도, 경도 셋팅
+        let x = $('#x').val();
+        let y = $('#y').val();
+
         //지도를 생성할 때 필요한 기본 옵션
         var options = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+          center: new kakao.maps.LatLng(x, y), //지도의 중심좌표.
           level: 3 //지도의 레벨(확대, 축소 정도)
         };
 
-        var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+        const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+        $('#move').on('click',() => {
+          // 이동할 위도 경도 위치를 생성합니다
+          var moveLatLon = new kakao.maps.LatLng(x, y);
+
+          // 지도 중심을 부드럽게 이동시킵니다
+          // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+          map.panTo(moveLatLon);
+        });
       });
     </script>
   </head>
   <body>
     <h1>카카오 맵 api</h1>
     <div id="map" style="width:500px;height:400px;"></div>
+    <label for="x">위도</label>
+    <input type="text" id="x" name="x" value="33.450701">
+    <label for="y">경도</label>
+    <input type="text" id="y" name="y" value="126.570667">
+    <button type="button" id="move" name="button">해당 위치로 이동하기</button>
   </body>
 </html>
