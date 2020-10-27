@@ -9,12 +9,7 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9812643842da217d0585ab3ec686084e&libraries=services,clusterer,drawing"></script>
     <script type="text/javascript">
       $(() => {
-        if (window.postMessage.length !== 1){
-          setTimeout(waitForBridge, 200);
-        }
-        else {
-          window.postMessage('웹에서 보내는 메세지입니다.', '*');
-        }
+        window.ReactNativeWebView.postMessage("웹에서 보내는 메세지입니다.");
 
         //지도를 담을 영역의 DOM 레퍼런스
         // var container = document.getElementById('map');
