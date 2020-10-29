@@ -1,15 +1,15 @@
 $(() => {
   var json = {
-    'text': ''
+    'pageId': ''
   };
 
   $('#camera').on('click', () => {
-    json.text = '카메라호출';
+    json.pageId = 'camera';
     window.ReactNativeWebView.postMessage(JSON.stringify(json));
   });
 
   $('#map').on('click', () => {
-    json.text = '지도호출';
+    json.pageId = 'map';
     window.ReactNativeWebView.postMessage(JSON.stringify(json));
   });
 });
