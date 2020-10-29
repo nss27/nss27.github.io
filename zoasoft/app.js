@@ -1,15 +1,15 @@
 $(() => {
-  var json = {
-    'pageId': ''
+  var data = {
+    pageId: ''
   };
 
   $('#camera').on('click', () => {
-    json.pageId = 'Camera';
-    window.ReactNativeWebView.postMessage(JSON.stringify(json));
+    data.pageId = 'Camera';
+    window.ReactNativeWebView.postMessage(JSON.stringify(data));
   });
 
   $('#map').on('click', () => {
-    json.pageId = 'Map';
-    window.ReactNativeWebView.postMessage(JSON.stringify(json));
+    data.pageId = 'Map';
+    window.ReactNativeWebView.postMessage(JSON.stringify(data));
   });
 });

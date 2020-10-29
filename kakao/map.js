@@ -41,9 +41,12 @@ $(() => {
       // 마커 위치를 클릭한 위치로 옮깁니다
       marker.setPosition(latlng);
 
-      var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-      message += '경도는 ' + latlng.getLng() + ' 입니다';
+      // lat: 위도, lng: 경도
+      var data = {
+          lat: latlng.getLat()
+        , lng: latlng.getLng()
+      };
 
-      $('#clickLatlng').html(message);
+      window.ReactNativeWebView.postMessage(JSON.stringify(data));
   });
 });
