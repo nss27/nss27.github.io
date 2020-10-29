@@ -4,12 +4,12 @@ $(() => {
   };
 
   $('#camera').on('click', () => {
-    json.pageId = 'camera';
+    json.pageId = 'Camera';
     window.ReactNativeWebView.postMessage(JSON.stringify(json));
   });
 
   $('#map').on('click', () => {
-    json.pageId = 'map';
+    json.pageId = 'Map';
     window.ReactNativeWebView.postMessage(JSON.stringify(json));
   });
 });
