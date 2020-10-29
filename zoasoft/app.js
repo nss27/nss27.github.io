@@ -1,9 +1,15 @@
 $(() => {
+  var json = {
+    'text': ''
+  };
+
   $('#camera').on('click', () => {
-    window.ReactNativeWebView.postMessage('카메라호출');
+    json.text = '카메라호출';
+    window.ReactNativeWebView.postMessage(JSON.stringify(json));
   });
 
   $('#map').on('click', () => {
-    window.ReactNativeWebView.postMessage('지도호출');
+    json.text = '지도호출';
+    window.ReactNativeWebView.postMessage(JSON.stringify(json));
   });
 });
