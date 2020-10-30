@@ -1,11 +1,6 @@
 $(() => {
   // ReactNative 통신
-  // $(document).on('message', (e) => {
-  //   var data = JSON.parse(e.data);
-  //   alert(data);
-  // });
-
-  document.addEventListener('message', function(e){
+  $(window).on('message', (e) => {
     var data = JSON.parse(e.data);
     alert(data);
   });
