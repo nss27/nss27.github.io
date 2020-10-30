@@ -6,7 +6,7 @@ $(() => {
   });
 
   // document.addEventListener('message', function(){
-  //   var data = JSON.parse(e.data);
+  //   var data = JSON.parse(e.originalEvent.data);
   //   alert(data.lat + ', ' + data.lng);
   // });
 
