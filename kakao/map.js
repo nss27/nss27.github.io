@@ -1,10 +1,15 @@
 $(() => {
   // ReactNative 통신
-  $(document).on('message', (e) => {
+  // $(document).on('message', (e) => {
+  //   var data = JSON.parse(e.data);
+  //   alert(data);
+  // });
+
+  document.addEventListener('message', function(e){
     var data = JSON.parse(e.data);
     alert(data);
   });
-  
+
   //지도를 담을 영역의 DOM 레퍼런스
   // var container = document.getElementById('map');
   const container = $('#map')[0];
