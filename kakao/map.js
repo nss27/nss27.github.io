@@ -1,10 +1,4 @@
 $(() => {
-  // ReactNative 통신
-  document.addEventListener('message', function(e){
-    var data = JSON.parse(e.data);
-    alert(data.lat + ', ' + data.lng);
-  });
-
   //지도를 담을 영역의 DOM 레퍼런스
   // var container = document.getElementById('map');
   const container = $('#map')[0];
@@ -27,16 +21,6 @@ $(() => {
   // 지도에 마커를 표시합니다
   marker.setMap(map);
 
-  // 버튼 이벤트 등록
-  $('#move').on('click',() => {
-    // 이동할 위도 경도 위치를 생성합니다
-    var moveLatLon = new kakao.maps.LatLng($('#x').val(), $('#y').val());
-
-    // 지도 중심을 부드럽게 이동시킵니다
-    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-    map.panTo(moveLatLon);
-  });
-
   // 지도에 클릭 이벤트를 등록합니다
   // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
   kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
@@ -54,5 +38,18 @@ $(() => {
       };
 
       window.ReactNativeWebView.postMessage(JSON.stringify(data));
+  });
+
+  // ReactNative 통신
+  document.addEventListener('message', function(e){
+    var data = JSON.parse(e.data);
+    // alert(data.lat + ', ' + data.lng);
+
+    // 이동할 위도 경도 위치를 생성합니다
+    var moveLatLon = new kakao.maps.LatLng(data.lat, data.lng);
+
+    // 지도 중심을 부드럽게 이동시킵니다
+    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+    map.panTo(moveLatLon);
   });
 });
