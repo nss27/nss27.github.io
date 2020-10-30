@@ -5,12 +5,12 @@ $(() => {
   //   alert(data.lat + ', ' + data.lng);
   // });
 
-  document.addEventListener('message', function(){
+  document.addEventListener('message', function(e){
     var data = JSON.parse(e.originalEvent.data);
     alert(data.lat + ', ' + data.lng);
   });
 
-  // window.addEventListener('message', function(){
+  // window.addEventListener('message', function(e){
   //   var data = JSON.parse(e.originalEvent.data);
   //   alert(data.lat + ', ' + data.lng);
   // });
