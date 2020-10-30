@@ -1,17 +1,17 @@
 $(() => {
   // ReactNative 통신
   // $(window).on('message', (e) => {
-  //   var data = JSON.parse(e.originalEvent.data);
+  //   var data = JSON.parse(e.data);
   //   alert(data.lat + ', ' + data.lng);
   // });
 
   document.addEventListener('message', function(e){
-    var data = JSON.parse(e.originalEvent.data);
+    var data = JSON.parse(e.data);
     alert(data.lat + ', ' + data.lng);
   });
 
   // window.addEventListener('message', function(e){
-  //   var data = JSON.parse(e.originalEvent.data);
+  //   var data = JSON.parse(e.data);
   //   alert(data.lat + ', ' + data.lng);
   // });
 
