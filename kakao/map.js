@@ -1,9 +1,8 @@
 $(() => {
   // ReactNative 통신
   $(window).on('message', (e) => {
-    alert(e);
-    // var data = JSON.parse(e.data);
-    // alert(data.lat + ', ' + data.lng);
+    var data = JSON.parse(e.data);
+    alert(data);
   });
 
   //지도를 담을 영역의 DOM 레퍼런스
