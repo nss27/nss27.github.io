@@ -1,19 +1,9 @@
 $(() => {
   // ReactNative 통신
-  $(window).on('message', (e) => {
+  document.addEventListener('message', function(e){
     var data = JSON.parse(e.data);
     alert(data.lat + ', ' + data.lng);
   });
-
-  // document.addEventListener('message', function(e){
-  //   var data = JSON.parse(e.data);
-  //   alert(data.lat + ', ' + data.lng);
-  // });
-
-  // window.addEventListener('message', function(e){
-  //   var data = JSON.parse(e.data);
-  //   alert(data.lat + ', ' + data.lng);
-  // });
 
   //지도를 담을 영역의 DOM 레퍼런스
   // var container = document.getElementById('map');
