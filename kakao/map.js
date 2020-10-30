@@ -32,26 +32,36 @@ $(() => {
       marker.setPosition(latlng);
 
       // lat: 위도, lng: 경도
-      var data = {
-          lat: latlng.getLat()
-        , lng: latlng.getLng()
-      };
-
-      window.ReactNativeWebView.postMessage(JSON.stringify(data));
+      // var data = {
+      //     lat: latlng.getLat()
+      //   , lng: latlng.getLng()
+      // };
+      //
+      // window.ReactNativeWebView.postMessage(JSON.stringify(data));
   });
 
   // ReactNative 통신
   document.addEventListener('message', function(e){
     var data = JSON.parse(e.data);
 
-    // 이동할 위도 경도 위치를 생성합니다
-    var moveLatLon = new kakao.maps.LatLng(data.lat, data.lng);
+    if(isNull(data)) return false;
 
-    // 지도 중심을 부드럽게 이동시킵니다
-    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-    map.panTo(moveLatLon);
+    switch(data.fnc)
+    {
+      // 내 위치로 이동하기
+      case 'myLocation':
+        // 이동할 위도 경도 위치를 생성합니다
+        var moveLatLon = new kakao.maps.LatLng(data.lat, data.lng);
 
-    // 마커 위치를 클릭한 위치로 옮깁니다
-    marker.setPosition(moveLatLon);
+        // 지도 중심을 부드럽게 이동시킵니다
+        // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+        map.panTo(moveLatLon);
+
+        // 마커 위치를 클릭한 위치로 옮깁니다
+        marker.setPosition(moveLatLon);
+        break;
+    }
   });
+
+  const isNull = (d == null || d == undefined || d == '') => return true;
 });
