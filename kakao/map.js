@@ -1,7 +1,7 @@
 $(() => {
   // ReactNative 통신
   $(window).on('message', (e) => {
-    alert(e.data);
+    alert(e);
     // var data = JSON.parse(e.data);
     // alert(data.lat + ', ' + data.lng);
   });
