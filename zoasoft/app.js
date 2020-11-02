@@ -4,8 +4,7 @@ $(() => {
   };
 
   $('#camera').on('click', () => {
-    data.pageId = 'Camera';
-    window.ReactNativeWebView.postMessage(JSON.stringify(data));
+    window.location.href = '../camera/camera.html';
   });
 
   $('#map').on('click', () => {
