@@ -14,7 +14,7 @@ $(() => {
   });
 
   $('#qrCodeScanner').on('click', () => {
-    data.pageId = 'qrCodeScanner';
+    data.pageId = 'QRCodeScanner';
     window.ReactNativeWebView.postMessage(JSON.stringify(data));
   });
 
