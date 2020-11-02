@@ -24,7 +24,7 @@ $(() => {
       $('img').attr('src', data.data);
 
       // 이미지 높이 조절
-      $('img').css('height', data.height + 'px');
+      $('img').css({'width', data.width + 'px', 'height', data.height + 'px'});
 
       break;
     }
