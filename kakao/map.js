@@ -62,6 +62,4 @@ $(() => {
         break;
     }
   });
-
-  const isNull = (d == null || d == undefined || d == '') => return true;
 });
