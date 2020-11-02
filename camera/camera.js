@@ -1,16 +1,16 @@
 $(() => {
   var data = {
       pageId: ''
-    , fucId: ''
+    , funcId: ''
   };
 
   $('#imagePicker').on('click', () => {
-    data.fucId = 'imagePicker';
+    data.funcId = 'imagePicker';
     window.ReactNativeWebView.postMessage(JSON.stringify(data));
   });
 
   $('#qrCodeScanner').on('click', () => {
-    data.fucId = 'qrCodeScanner';
+    data.funcId = 'qrCodeScanner';
     window.ReactNativeWebView.postMessage(JSON.stringify(data));
   });
 

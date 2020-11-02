@@ -46,7 +46,7 @@ $(() => {
 
     if(isNull(data)) return false;
 
-    switch(data.fnc)
+    switch(data.func)
     {
       // 내 위치로 이동하기
       case 'myLocation':
