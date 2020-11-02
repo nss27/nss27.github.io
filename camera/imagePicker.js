@@ -20,13 +20,13 @@ $(() => {
       // img data 송신
       case 'updateImage':
 
-        // 이미지 data 가져오기
-        $('img').attr('src', data.uri);
+      // 이미지 data 가져오기
+      $('img').attr('src', data.data);
 
-        // 이미지 높이 조절
-//        $('img').css({'height', '500px'});
+      // 이미지 높이 조절
+      $('img').css({'height', data.height + 'px'});
 
-        break;
+      break;
     }
   });
 });
