@@ -23,8 +23,13 @@ $(() => {
       // 이미지 data 가져오기
       $('img').attr('src', data.data);
 
-      // 이미지 높이 조절
-      $('img').css({'width', data.width + 'px', 'height', data.height + 'px'});
+      // 이미지 높이 조절\
+      var imgCss = {
+          'width' : data.width + 'px'
+        , 'height' : data.height + 'px'
+      };
+      
+      $('img').css(imgCss);
 
       break;
     }
