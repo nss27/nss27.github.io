@@ -15,6 +15,16 @@ $(()=>{
                 gps2Callback(e);
                 break;
             
+            // Camera (SYSTEM)
+            case 'camera1Callback':
+                camera1Callback(e);
+                break;
+            
+            // Camera Preview
+            case 'camera2Callback':
+                camera2Callback(e);
+                break;
+
             default:
                 break;
         }
@@ -77,19 +87,31 @@ var gps2Callback = function(e)
 var camera1 = function()
 {
     var data = {
-        text: 'camera1 클릭'
+        func: 'takePicture'
     }
 
     // 부모창에 데이터 송신
     window.parent.postMessage(data, '*');
 }
 
+var camera1Callback = function(e)
+{
+    $('img').attr({
+        'src': e.data.result.imageData
+    });
+}
+
 var camera2 = function()
 {
     var data = {
-        text: 'camera2 클릭'
+        func: 'openCamera'
     }
 
     // 부모창에 데이터 송신
     window.parent.postMessage(data, '*');
+}
+
+var camera2Callback = function(e)
+{
+    
 }
