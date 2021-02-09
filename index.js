@@ -9,6 +9,7 @@ class App
     mirror = 1;
     type = null;
     qrResult = null;
+    qrScanner = null;
 
     constructor()
     {
@@ -48,8 +49,8 @@ class App
 
         document.getElementById("mirror").addEventListener("change", this.mirrorMode.bind(this));
 
-        const qrscanner = new QrScanner(this.video, this.qrScan.bind(this));
-        qrscanner.start();
+        this.qrScanner = new QrScanner(this.video, this.qrScan.bind(this));
+        this.qrScanner.start();
     }
 
     takePicture()
@@ -75,13 +76,13 @@ class App
 
     qrScan(result)
     {
-        if(result.indexOf('https') > -1) result = `<a href="${result}">${result}</a>`;
+        if(result.indexOf('http') > -1) result = `<a href="${result}">${result}</a>`;
         this.qrResult.innerHTML = result;
         this.qrResult.style.display = "block";
 
         setTimeout(() => {
             this.qrResult.style.display = "none";
-        }, 3000);
+        }, 2000);
     }
 }
 
