@@ -64,4 +64,17 @@ html, body {
   -o-object-fit: cover;
      object-fit: cover;
 }
+
+.qr-result {
+  position: absolute;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+  left: 50%;
+  bottom: 20vh;
+  width: 90vw;
+  height: 10vmin;
+  background-color: #00000080;
+  color: #ffffff;
+  display: none;
+}
 /*# sourceMappingURL=index.css.map */

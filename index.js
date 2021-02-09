@@ -8,6 +8,7 @@ class App
     gallery = null;
     mirror = 1;
     type = null;
+    qrResult = null;
 
     constructor()
     {
@@ -22,6 +23,8 @@ class App
         this.context = this.canvas.getContext('2d');
 
         this.gallery = document.querySelector('#gallery');
+
+        this.qrResult = document.querySelector('.qr-result');
 
         // Grab elements, create settings, etc.
         this.video = document.querySelector('.preview');
@@ -45,7 +48,7 @@ class App
 
         document.getElementById("mirror").addEventListener("change", this.mirrorMode.bind(this));
 
-        const qrscanner = new QrScanner(this.video, result => {console.log(result);});
+        const qrscanner = new QrScanner(this.video, this.qrScan.bind(this));
         qrscanner.start();
     }
 
@@ -70,9 +73,15 @@ class App
         this.mirror == 1? this.video.style.setProperty('transform', 'rotateY(0deg)') : this.video.style.setProperty('transform', 'rotateY(180deg)');
     }
 
-    typeChange(e)
+    qrScan(result)
     {
-        console.log(e);
+        if(result.indexOf('https') > -1) result = `<a href="${result}">${result}</a>`;
+        this.qrResult.innerHTML = result;
+        this.qrResult.style.display = "block";
+
+        setTimeout(() => {
+            this.qrResult.style.display = "none";
+        }, 3000);
     }
 }
 
