@@ -1,3 +1,5 @@
+import QrScanner from './qr-scanner.min.js';
+
 class App
 {
     video = null;
@@ -5,6 +7,7 @@ class App
     context = null;
     gallery = null;
     mirror = 1;
+    type = null;
 
     constructor()
     {
@@ -13,6 +16,8 @@ class App
 
     async onInit()
     {
+        QrScanner.WORKER_PATH = './qr-scanner-worker.min.js';
+
         this.canvas = document.querySelector('.image-sensor');
         this.context = this.canvas.getContext('2d');
 
@@ -21,13 +26,14 @@ class App
         // Grab elements, create settings, etc.
         this.video = document.querySelector('.preview');
 
-        if(this.mirror == -1) this.video.style.setProperty('transform', 'rotateY(180deg)');
+        this.mirror == 1? this.video.style.setProperty('transform', 'rotateY(0deg)') : this.video.style.setProperty('transform', 'rotateY(180deg)');
 
         // Get access to the camera!
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) 
         {
             // Not adding `{ audio: true }` since we only want video now
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            // const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } } });
 
             //video.src = window.URL.createObjectURL(stream);
             this.video.srcObject = stream;
@@ -36,6 +42,11 @@ class App
 
         // Trigger photo take
         document.getElementById("sutter").addEventListener("click", this.takePicture.bind(this));
+
+        document.getElementById("mirror").addEventListener("change", this.mirrorMode.bind(this));
+
+        const qrscanner = new QrScanner(this.video, result => {console.log(result);});
+        qrscanner.start();
     }
 
     takePicture()
@@ -50,6 +61,18 @@ class App
         this.context.drawImage(this.video, 0, 0, w * this.mirror, h);
 
         this.gallery.setAttribute('src', this.canvas.toDataURL());
+    }
+
+    mirrorMode(e)
+    {
+        this.mirror = this.mirror == 1 ? -1 : 1;
+
+        this.mirror == 1? this.video.style.setProperty('transform', 'rotateY(0deg)') : this.video.style.setProperty('transform', 'rotateY(180deg)');
+    }
+
+    typeChange(e)
+    {
+        console.log(e);
     }
 }
 
