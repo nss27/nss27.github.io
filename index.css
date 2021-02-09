@@ -1,0 +1,67 @@
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+.camera {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.camera .preview {
+  width: 100%;
+}
+
+.camera .image-sensor {
+  display: none;
+}
+
+.mode {
+  position: absolute;
+  top: 0px;
+  width: 100vw;
+  height: 5vh;
+}
+
+.controller {
+  position: absolute;
+  bottom: 0px;
+  width: 100vw;
+  height: 20vh;
+}
+
+.controller * {
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  top: 50%;
+}
+
+.controller #sutter {
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  background-color: #000000;
+  border-radius: 50%;
+}
+
+.controller #gallery {
+  left: 25%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 0 none;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+/*# sourceMappingURL=index.css.map */

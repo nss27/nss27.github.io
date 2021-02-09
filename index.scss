@@ -1,0 +1,67 @@
+html, body
+{
+    padding: 0;
+    margin: 0;
+}
+
+.camera
+{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .preview
+    {
+        width: 100%;
+    }
+
+    .image-sensor
+    {
+        display: none;
+    }
+}
+
+.mode
+{
+    position: absolute;
+    top: 0px;
+    width: 100vw;
+    height: 5vh;
+}
+
+.controller
+{
+    position: absolute;
+    bottom: 0px;
+    width: 100vw;
+    height: 20vh;
+
+    *
+    {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+    }
+
+    #sutter
+    {
+        left: 50%;
+        width: 80px;
+        height: 80px;
+        background-color: #000000;
+        border-radius: 50%;
+    }
+
+    #gallery
+    {
+        left: 25%;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 0 none;
+        object-fit: cover;
+    }
+}
