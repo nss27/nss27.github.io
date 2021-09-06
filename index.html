@@ -1,180 +1,123 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS 연동 페이지</title>
-    <style>
-    	html, body { height:100%; margin:0; }
-    	section { padding:10px; }
-    	button { margin-bottom: 5px; }
-    </style>
+    <title>마이크 테스트</title>
 </head>
+
 <body>
-	<div class="container">
-		<section>
-			<div id="checkMobile">Mobile 여부 : </div>
-		</section>
+    <input type=checkbox id="chk-hear-mic"><label for="chk-hear-mic">마이크 소리 듣기</label>
+    <button id="record">녹음</button>
+    <button id="stop">정지</button>
+    <div id="sound-clips"></div>
+    <script>
+        const record = document.getElementById("record")
+        const stop = document.getElementById("stop")
+        const soundClips = document.getElementById("sound-clips")
+        const chkHearMic = document.getElementById("chk-hear-mic")
 
-		<section>
+        const audioCtx = new(window.AudioContext || window.webkitAudioContext)() // 오디오 컨텍스트 정의
 
-			--------------- common --------------<br/>
-			<a href="javascript:setStorageKey('isFirstRun')">isFirstRun:최초실행여부</a>
-			<br />
+        const analyser = audioCtx.createAnalyser()
+        //        const distortion = audioCtx.createWaveShaper()
+        //        const gainNode = audioCtx.createGain()
+        //        const biquadFilter = audioCtx.createBiquadFilter()
 
-			<input id="selectKey" type="text" placeholder="데이터 키값"/>
-			<button id="btnSelectStorage">디바이 정보 조회</button><br/>
+        function makeSound(stream) {
+            const source = audioCtx.createMediaStreamSource(stream)
 
-			<input id="saveData" type="text" placeholder="저장할 문자열" />
-			<button id="btnInsertStorage">디바이스 정보 등록</button>
-		</section>
+            source.connect(analyser)
+            //            analyser.connect(distortion)
+            //            distortion.connect(biquadFilter)
+            //            biquadFilter.connect(gainNode)
+            //            gainNode.connect(audioCtx.destination) // connecting the different audio graph nodes together
+            analyser.connect(audioCtx.destination)
 
-		<section>
-			----------------- fido -----------------<br/>
-			<input id="fidoUserId" type="text" placeholder="pnsrNpsNo" /><br />
-			<button id="btnFidoRegist">FIDO 사용자 등록</button>
-			<button id="btnFidoAuth">FIDO 사용자 인증</button>
-		</section>
+        }
 
-		<section>
-			----------------- bio ------------------<br/>
-			<div>!! 카메라 권한 체크는 등록에만 걸어놨습니다. 등록 후 인증을 해주세요.</div>
-			<button id="btnRegistBio">여권(안면+음성) 본인등록</button><br />
-			<button id="btnConfirmBio">생체정보 인증 </button><br />
-			<button id="btnRemoveBio">안면정보 제거</button>
-		</section>
+        if (navigator.mediaDevices) {
+            console.log('getUserMedia supported.')
 
-		<section>
-			----------------- ocr ------------------<br/>
-			<button id="btnRegistPassport">여권 촬영</button>
-		</section>
+            const constraints = {
+                audio: true
+            }
+            let chunks = []
 
-		<section>
-			----------------- didBridge ------------------<br/>
-			<button id="btnCreateDID">DID 도큐먼트 생성</button>
-			<button id="btnIssueVC">VC 발급</button>
-			<button id="btnRequestVP">VP 요청</button>
-		</section>
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
 
-		<section>
-			----------------- 암복호화 저장 테스트 ------------------<br/>
-			<button id="btnEncryptStore">암호화 저장</button>
-			<button id="btnDecryptStrore">복호화 로드</button>
-		</section>
+                    const mediaRecorder = new MediaRecorder(stream)
+                    
+                    chkHearMic.onchange = e => {
+                        if(e.target.checked == true) {
+                            audioCtx.resume()
+                            makeSound(stream)
+                        } else {
+                            audioCtx.suspend()
+                        }
+                    }
+                    
+                    record.onclick = () => {
+                        mediaRecorder.start()
+                        console.log(mediaRecorder.state)
+                        console.log("recorder started")
+                        record.style.background = "red"
+                        record.style.color = "black"
+                    }
 
-		<div>
-			github page 호출중
-		</div>
-	</div>
+                    stop.onclick = () => {
+                        mediaRecorder.stop()
+                        console.log(mediaRecorder.state)
+                        console.log("recorder stopped")
+                        record.style.background = ""
+                        record.style.color = ""
+                    }
+
+                    mediaRecorder.onstop = e => {
+                        console.log("data available after MediaRecorder.stop() called.")
+
+                        const clipName = prompt("오디오 파일 제목을 입력하세요.", new Date())
+
+                        const clipContainer = document.createElement('article')
+                        const clipLabel = document.createElement('p')
+                        const audio = document.createElement('audio')
+                        const deleteButton = document.createElement('button')
+
+                        clipContainer.classList.add('clip')
+                        audio.setAttribute('controls', '')
+                        deleteButton.innerHTML = "삭제"
+                        clipLabel.innerHTML = clipName
+
+                        clipContainer.appendChild(audio)
+                        clipContainer.appendChild(clipLabel)
+                        clipContainer.appendChild(deleteButton)
+                        soundClips.appendChild(clipContainer)
+
+                        audio.controls = true
+                        const blob = new Blob(chunks, {
+                            'type': 'audio/ogg codecs=opus'
+                        })
+                        chunks = []
+                        const audioURL = URL.createObjectURL(blob)
+                        audio.src = audioURL
+                        console.log("recorder stopped")
+
+                        deleteButton.onclick = e => {
+                            evtTgt = e.target
+                            evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode)
+                        }
+                    }
+
+                    mediaRecorder.ondataavailable = e => {
+                        chunks.push(e.data)
+                    }
+                })
+                .catch(err => {
+                    console.log('The following error occurred: ' + err)
+                })
+        }
+    </script>
 </body>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-if (!window.didBridge) {
-	alert('DID용 함수 연결 실패!');
-}
-
-$(function() {
-	$("#checkMobile").append(isMobile().toString());
-
-	if (!isMobile()) {
-		return;
-	}
-
-	//디바이스 데이터 조회
-	$('#btnSelectStorage').click(function() {
-		$('#selectKey').val().length > 0
-		&& webViewBridge.getLocalStorage($("#selectKey").val(), "callback");
-	})
-
-	//디바이스 데이터 저장
-	$('#btnInsertStorage').click(function() {
-		$('#selectKey').val().length > 0 && $('#saveData').val().length > 0
-		&& webViewBridge.setLocalStorage($("#selectKey").val(), $("#saveData").val(), "callback");
-	})
-
-	/********************* FIDO *********************/
-
-	//fido 사용자 등록 호출
-	$('#btnFidoRegist').click(function() {
-		$('#fidoUserId').val().length > 0 
-		&& fidoBridge.callSimpleCert($('#fidoUserId').val(), "deedNo", "excvYq", "N", "callback");
-	})
-
-	//fido 사용자 인증
-	$('#btnFidoAuth').click(function() {
-		$('#fidoUserId').val().length > 0 
-		&& fidoBridge.callSimpleCert($('#fidoUserId').val(), "deedNo", "excvYq", "Y", "callback");
-	})
-
-
-	/********************* BIO *********************/
-	//생체정보 본인등록(안면+음성 등록)
-	$('#btnRegistBio').click(function() {
-		bioBridge.callRegistBio("pnsrNpsNo", "deedNo", "excvYq");
-	})
-
-	//생체정보 인증(안면+음성 검증)
-	$('#btnConfirmBio').click(function() {
-		bioBridge.callConfirmBio("pnsrNpsNo", "deedNo", "excvYq");
-	})
-
-	$('#btnRemoveBio').click(function() {
-		bioBridge.callRemoveBio();
-	})
-
-	/********************* OCR *********************/
-	//여권촬영
-	$('#btnRegistPassport').click(function() {
-		ocrBridge.callRegistPassport("test");
-	})
-
-	// ==================== DID ==============
-	$('#btnCreateDID').click(function() {
-		didBridge.createDid();
-	});
-
-	$('#btnIssueVC').click(function() {
-		didBridge.issueDidVC();
-	});
-
-	$('#btnRequestVP').click(function() {
-		didBridge.requestDidVP();
-	});
-
-	// ==================== 암복호화 테스트 ==============
-	$('#btnEncryptStore').click(function() {
-		didBridge.encrypt("key1", "암호화 저장 테스트 입니다. 한글도 잘 되겠지요?");
-	});
-	$('#btnDecryptStrore').click(function() {
-		didBridge.decrypt("key1");
-	});
-});
-
-/**
- * 모바일 기기체크
- **/
-const isMobile = () => {
-	return navigator.userAgent.indexOf('npsMobile') > -1;
-}
-
-/**
- * 인터페이스 콜백함수(테스트용)
- **/
-const callback = (data) => {
-	let resultData = data;
-
-	if(typeof data === 'object') resultData = JSON.stringify(resultData);
-
-	alert(resultData);
-}
-
-const setStorageKey = (key) => {
-	$('#selectKey').val(key);
-}
-
-const responseVP = (vp) => {
-	console.log('vp: ' + vp);
-};
-</script>
 </html>
